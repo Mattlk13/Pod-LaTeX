@@ -1314,14 +1314,16 @@ sub interior_sequence {
     return "\\textsf{$seq_argument}";
 
   } elsif ($seq_command eq 'X') {
-    # Index entries
+    my ($kind, $content) = $seq_argument =~ /^(.+)\|(.+)$/ ? ($1, $2) : ('cite', $seq_argument);
 
-    # use \index command
-    # I will let '!' go through for now
-    # not sure how sub categories are handled in X<>
-    my $index = $self->_create_index($seq_argument);
-    return "\\index{$index}\n";
+    if ($kind eq 'index') {
+        # use \index command
+        # I will let '!' go through for now
+        # not sure how sub categories are handled in X<>
+        $content = $self->_create_index($seq_argument);
+    }
 
+    return '\\'.$kind."{$content}\n";
   } else {
     carp "Unknown sequence $seq_command<$seq_argument>";
   }
