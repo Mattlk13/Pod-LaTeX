@@ -1323,7 +1323,7 @@ sub interior_sequence {
         $content = $self->_create_index($seq_argument);
     }
 
-    return '\\'.$kind."{$content}\n";
+    return '~\\'.$kind."{$content}\n";
   } else {
     carp "Unknown sequence $seq_command<$seq_argument>";
   }
