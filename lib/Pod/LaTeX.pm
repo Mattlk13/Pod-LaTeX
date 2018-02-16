@@ -1257,7 +1257,16 @@ sub interior_sequence {
     return "\\texttt{$seq_argument}";
 
   } elsif ($seq_command eq 'F') {
-    return "\\gls{$seq_argument}";
+    my $str = '';
+    if ($seq_argument =~ /^(.*)\|(.*)$/) {
+        ($seq_argument, my $right) = ($1, $2);
+        $str .= '\\glsunsetall' if $right eq '';
+        $str .= $right eq 's' ? "\\glspl{$seq_argument}" : "\\gls{$seq_argument}";
+        $str .= '\\glsresetall' if $right eq '';
+    } else {
+        $str = "\\gls{$seq_argument}";
+    }
+    return $str;
 
   } elsif ($seq_command eq 'E') {
     return "\\emph{$seq_argument}";
@@ -1317,16 +1326,18 @@ sub interior_sequence {
     return "\\textsf{$seq_argument}";
 
   } elsif ($seq_command eq 'X') {
-    my ($kind, $content) = $seq_argument =~ /^(.+)\|(.+)$/ ? ($1, $2) : ('cite', $seq_argument);
+    my ($kind, $content) = $seq_argument =~ /^(.*)\|(.*)$/ ? ($1, $2) : ('cite', $seq_argument);
+    my ($prefix, $suffix) = ('','');
 
     if ($kind eq 'index') {
         # use \index command
         # I will let '!' go through for now
         # not sure how sub categories are handled in X<>
         $content = $self->_create_index($seq_argument);
+        $suffix = "\n";
     }
-
-    return '~\\'.$kind."{$content}\n";
+    $prefix = '~' if $kind eq 'cite';
+    return defined $content ? "$prefix\\$kind"."{$content}$suffix" : "\\$kind";
   } else {
     carp "Unknown sequence $seq_command<$seq_argument>";
   }
