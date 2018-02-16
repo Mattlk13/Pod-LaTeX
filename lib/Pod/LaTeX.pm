@@ -1257,10 +1257,10 @@ sub interior_sequence {
     return "\\texttt{$seq_argument}";
 
   } elsif ($seq_command eq 'F') {
-    return "\\emph{$seq_argument}";
-
-  } elsif ($seq_command eq 'G') {
     return "\\gls{$seq_argument}";
+
+  } elsif ($seq_command eq 'E') {
+    return "\\emph{$seq_argument}";
 
   } elsif ($seq_command eq 'S') {
     # non breakable spaces
