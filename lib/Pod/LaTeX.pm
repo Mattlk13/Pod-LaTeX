@@ -1259,6 +1259,9 @@ sub interior_sequence {
   } elsif ($seq_command eq 'F') {
     return "\\emph{$seq_argument}";
 
+  } elsif ($seq_command eq 'G') {
+    return "\\gls{$seq_argument}";
+
   } elsif ($seq_command eq 'S') {
     # non breakable spaces
     my $nbsp = '~';
