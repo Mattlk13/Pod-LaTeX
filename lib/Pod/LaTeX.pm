@@ -1260,9 +1260,9 @@ sub interior_sequence {
     my $str = '';
     if ($seq_argument =~ /^(.*)\|(.*)$/) {
         ($seq_argument, my $right) = ($1, $2);
-        $str .= '\\glsunsetall' if $right eq '';
+        $str .= "\\glsunset{$seq_argument}" if $right eq '';
         $str .= $right eq 's' ? "\\glspl{$seq_argument}" : "\\gls{$seq_argument}";
-        $str .= '\\glsresetall' if $right eq '';
+        $str .= "\\glsreset{$seq_argument}" if $right eq '';
     } else {
         $str = "\\gls{$seq_argument}";
     }
